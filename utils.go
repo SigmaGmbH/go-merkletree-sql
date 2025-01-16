@@ -4,21 +4,21 @@ import (
 	"encoding/binary"
 	"math/big"
 
-	"github.com/iden3/go-iden3-crypto/poseidon"
+	"github.com/iden3/go-iden3-crypto/mimc7"
 )
 
-// HashElems performs a poseidon hash over the array of ElemBytes, currently we
-// are using 2 elements.  Uses poseidon.Hash to be compatible with the circom
+// HashElems performs a MiMC hash over the array of ElemBytes, currently we
+// are using 2 elements.  Uses mimc7.Hash to be compatible with the circom
 // circuits implementations.
 func HashElems(elems ...*big.Int) (*Hash, error) {
-	poseidonHash, err := poseidon.Hash(elems)
+	mimcHash, err := mimc7.Hash(elems, big.NewInt(0))
 	if err != nil {
 		return nil, err
 	}
-	return NewHashFromBigInt(poseidonHash)
+	return NewHashFromBigInt(mimcHash)
 }
 
-// HashElemsKey performs a poseidon hash over the array of ElemBytes, currently
+// HashElemsKey performs a MiMC hash over the array of ElemBytes, currently
 // we are using 2 elements.
 func HashElemsKey(key *big.Int, elems ...*big.Int) (*Hash, error) {
 	if key == nil {
@@ -27,11 +27,11 @@ func HashElemsKey(key *big.Int, elems ...*big.Int) (*Hash, error) {
 	bi := make([]*big.Int, 3)
 	copy(bi[:], elems)
 	bi[2] = key
-	poseidonHash, err := poseidon.Hash(bi)
+	mimcHash, err := mimc7.Hash(bi, big.NewInt(0))
 	if err != nil {
 		return nil, err
 	}
-	return NewHashFromBigInt(poseidonHash)
+	return NewHashFromBigInt(mimcHash)
 }
 
 // SetBitBigEndian sets the bit n in the bitmap to 1, in Big Endian.

@@ -7,11 +7,11 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/iden3/go-iden3-crypto/mimc7"
 	"math/big"
 	"testing"
 
 	"github.com/iden3/go-iden3-crypto/constants"
-	"github.com/iden3/go-iden3-crypto/poseidon"
 	"github.com/iden3/go-merkletree-sql/v2"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -199,10 +199,10 @@ func TestNewTree(t *testing.T, sto merkletree.Storage) {
 	assert.Equal(t, "0", mt.Root().String())
 
 	// test vectors generated using https://github.com/iden3/circomlib smt.js
-	err = mt.Add(ctx, big.NewInt(1), big.NewInt(2))
+	err = mt.Add(ctx, big.NewInt(1), big.NewInt(1))
 	assert.Nil(t, err)
 	assert.Equal(t,
-		"13578938674299138072471463694055224830892726234048532520316387704878000008795",
+		"15598711107779373569990488189715942088332584754159977841357588092011406726532",
 		mt.Root().BigInt().String())
 
 	err = mt.Add(ctx, big.NewInt(33), big.NewInt(44))
@@ -248,7 +248,7 @@ func TestTreeRootWithOneNode(t *testing.T, sto merkletree.Storage) {
 		big.NewInt(200), // value
 		big.NewInt(1),
 	}
-	res, _ := poseidon.Hash(inputs)
+	res, _ := mimc7.Hash(inputs, big.NewInt(0))
 	assert.Equal(t, mt.Root().BigInt().String(), res.String())
 }
 
