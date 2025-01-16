@@ -11,8 +11,8 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/SigmaGmbH/go-merkletree-sql/v2"
 	"github.com/iden3/go-iden3-crypto/constants"
-	"github.com/iden3/go-merkletree-sql/v2"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

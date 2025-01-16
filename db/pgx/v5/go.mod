@@ -1,4 +1,4 @@
-module github.com/iden3/go-merkletree-sql/db/pgx/v5
+module github.com/SigmaGmbH/go-merkletree-sql/db/pgx/v5
 
 go 1.19
 
